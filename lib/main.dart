@@ -1,8 +1,8 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:memory/blocs/status_bar_color_bloc.dart';
-import 'package:memory/ui/home_page.dart';
+import 'package:Memory/blocs/status_bar_color_bloc.dart';
+import 'package:Memory/ui/home_page.dart';
 
 void main() => runApp(MyApp());
 
