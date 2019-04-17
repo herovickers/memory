@@ -15,11 +15,25 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   final _homePageTabs = [
-    Center(
-        child: Text(
-      "Memory Lane",
-      style: TextStyle(fontSize: 48.0),
-    )),
+    Container(
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: Center(
+                child: Text(
+              "Memory Lane",
+              style: TextStyle(fontSize: 24.0),
+            )),
+          ),
+          Expanded(
+            flex: 4,
+            child: Container(
+              color: Colors.cyanAccent,
+            ),
+          ),
+        ],
+      ),
+    ),
     Center(
         child: Text(
       "Today",
@@ -27,7 +41,7 @@ class _HomePageState extends State<HomePage> {
     )),
     Center(
         child: Text(
-      "Your memory",
+      "Your memories",
       style: TextStyle(fontSize: 48.0),
     )),
     Center(
@@ -68,18 +82,18 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               BottomNavigationBarItem(
-                icon: Icons.memory,
+                icon: Icons.timeline,
                 title: "Memory Lane",
                 index: 0,
               ),
               BottomNavigationBarItem(
-                icon: Icons.today,
+                icon: Icons.timelapse,
                 title: "Today",
                 index: 1,
               ),
               BottomNavigationBarItem(
                 icon: Icons.cloud,
-                title: "Your Memory",
+                title: "Your Memories",
                 index: 2,
               ),
               BottomNavigationBarItem(
@@ -145,7 +159,7 @@ class BottomNavigationBarItem extends StatelessWidget {
                     ),
                     Text(
                       title,
-                      style: Theme.of(context).textTheme.overline.copyWith(
+                      style: Theme.of(context).textTheme.caption.copyWith(
                             color: itemColor,
                           ),
                     )
