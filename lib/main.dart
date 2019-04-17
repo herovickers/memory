@@ -1,7 +1,7 @@
+import 'package:Memory/blocs/ui_helper_bloc.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:Memory/blocs/status_bar_color_bloc.dart';
 import 'package:Memory/ui/home_page.dart';
 
 void main() => runApp(MyApp());
@@ -85,21 +85,21 @@ class MyApp extends StatelessWidget {
   ThemeData returnCurrentTheme(Brightness brightness, ThemeData darkThemeData,
       ThemeData lightThemeData) {
     if (brightness == Brightness.dark) {
-      statusBarColorBloc.setBrightness(darkThemeData.primaryColor);
+      uIHelperBloc.setBrightness(darkThemeData.primaryColor);
 
       SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(
           statusBarColor:
-              statusBarColorBloc.brightnessValue, // status bar color
+              uIHelperBloc.brightnessValue, // status bar color
         ),
       );
       return darkThemeData;
     } else {
-      statusBarColorBloc.setBrightness(lightThemeData.primaryColor);
+      uIHelperBloc.setBrightness(lightThemeData.primaryColor);
 
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarBrightness: Brightness.dark,
-        statusBarColor: statusBarColorBloc.brightnessValue, // status bar color
+        statusBarColor: uIHelperBloc.brightnessValue, // status bar color
       ));
 
       return lightThemeData;

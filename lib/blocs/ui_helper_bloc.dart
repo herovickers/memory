@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-class StatusBarColorBloc {
+class UIHelperBloc {
   final statusBarColor = BehaviorSubject<Color>();
+  final currentTabIndex = BehaviorSubject<int>();
 
   void dispose() {
     statusBarColor.close();
+    currentTabIndex.close();
   }
 
   get brightnessValue {
@@ -15,6 +17,10 @@ class StatusBarColorBloc {
   setBrightness(Color color) {
     statusBarColor.sink.add(color);
   }
+
+  setCurrentTab(int index) {
+    currentTabIndex.sink.add(index);
+  }
 }
 
-final statusBarColorBloc = StatusBarColorBloc();
+final uIHelperBloc = UIHelperBloc();
