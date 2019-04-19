@@ -1,4 +1,6 @@
 import 'package:Memory/blocs/ui_helper_bloc.dart';
+import 'package:Memory/resources/tab_item_map.dart';
+import 'package:Memory/resources/tab_items.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +15,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  List<String> tabBarItemKeysList = TabItemMap.TAB_ITEM_MAP.keys.toList();
+  List<TabItem> tabBarItemValuesList = TabItemMap.TAB_ITEM_MAP.values.toList();
 
   final _homePageTabs = [
     Container(
@@ -60,51 +64,40 @@ class _HomePageState extends State<HomePage> {
       statusBarColor: uIHelperBloc.brightnessValue, // status bar color
     ));
     return SafeArea(
-      child: Scaffold(
-        body: StreamBuilder<int>(
-            stream: uIHelperBloc.currentTabIndex,
-            initialData: 0,
-            builder: (context, snapshot) {
-              _selectedIndex = snapshot.data;
-              return _homePageTabs.elementAt(_selectedIndex);
-            }),
-        floatingActionButton: FloatingActionButton.extended(
-            icon: Icon(Icons.swap_calls),
-            label: Text("Switch theme"),
-            onPressed: () {
-              setState(() {
-                switchBrightness();
-              });
-            }),
-        bottomNavigationBar: BottomAppBar(
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              BottomNavigationBarItem(
-                icon: Icons.timeline,
-                title: "Memory Lane",
-                index: 0,
+      child: StreamBuilder<Object>(
+          stream: uIHelperBloc.currentTabIndex,
+          initialData: 0,
+          builder: (context, snapshot) {
+            _selectedIndex = snapshot.data;
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(tabBarItemKeysList[_selectedIndex]),
+                centerTitle: true,
               ),
-              BottomNavigationBarItem(
-                icon: Icons.timelapse,
-                title: "Today",
-                index: 1,
+              body: _homePageTabs.elementAt(_selectedIndex),
+              floatingActionButton: FloatingActionButton(
+                  child: Icon(Icons.swap_calls),
+                  onPressed: () {
+                    setState(() {
+                      switchBrightness();
+                    });
+                  }),
+              bottomNavigationBar: BottomAppBar(
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: tabBarItemKeysList.map((tab) {
+                    var tabIndex = tabBarItemKeysList.indexOf(tab);
+                    return BottomNavigationBarItem(
+                      icon: tabBarItemValuesList[tabIndex].tabItemIcon,
+                      title: tabBarItemValuesList[tabIndex].tabItemTitle,
+                      index: tabIndex,
+                    );
+                  }).toList(),
+                ),
               ),
-              BottomNavigationBarItem(
-                icon: Icons.cloud,
-                title: "Your Memories",
-                index: 2,
-              ),
-              BottomNavigationBarItem(
-                icon: Icons.search,
-                title: "Search",
-                index: 3,
-              ),
-            ],
-          ),
-        ),
-      ),
+            );
+          }),
     );
   }
 
@@ -148,8 +141,8 @@ class BottomNavigationBarItem extends StatelessWidget {
               stream: uIHelperBloc.currentTabIndex,
               builder: (context, snapshot) {
                 Color itemColor = snapshot.data == index
-                    ? Colors.cyan
-                    : Theme.of(context).iconTheme.color;
+                    ? Theme.of(context).primaryIconTheme.color
+                    : Theme.of(context).accentIconTheme.color;
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
