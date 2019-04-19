@@ -1,6 +1,10 @@
 import 'package:Memory/blocs/ui_helper_bloc.dart';
 import 'package:Memory/resources/tab_item_map.dart';
 import 'package:Memory/resources/tab_items.dart';
+import 'package:Memory/ui/tabs/memory_lane.dart';
+import 'package:Memory/ui/tabs/search.dart';
+import 'package:Memory/ui/tabs/today.dart';
+import 'package:Memory/ui/tabs/your_memories.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,40 +23,10 @@ class _HomePageState extends State<HomePage> {
   List<TabItem> tabBarItemValuesList = TabItemMap.TAB_ITEM_MAP.values.toList();
 
   final _homePageTabs = [
-    Container(
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: Center(
-                child: Text(
-              "Memory Lane",
-              style: TextStyle(fontSize: 24.0),
-            )),
-          ),
-          Expanded(
-            flex: 4,
-            child: Container(
-              color: Colors.cyanAccent,
-            ),
-          ),
-        ],
-      ),
-    ),
-    Center(
-        child: Text(
-      "Today",
-      style: TextStyle(fontSize: 48.0),
-    )),
-    Center(
-        child: Text(
-      "Your memories",
-      style: TextStyle(fontSize: 48.0),
-    )),
-    Center(
-        child: Text(
-      "Search",
-      style: TextStyle(fontSize: 48.0),
-    )),
+    MemoryLane(),
+    Today(),
+    YourMemories(),
+    Search(),
   ];
 
   @override
@@ -75,13 +49,15 @@ class _HomePageState extends State<HomePage> {
                 centerTitle: true,
               ),
               body: _homePageTabs.elementAt(_selectedIndex),
-              floatingActionButton: FloatingActionButton(
-                  child: Icon(Icons.swap_calls),
-                  onPressed: () {
-                    setState(() {
-                      switchBrightness();
-                    });
-                  }),
+              floatingActionButton: Opacity(
+                              child: FloatingActionButton(
+                    child: Icon(Icons.swap_calls),
+                    onPressed: () {
+                      setState(() {
+                        switchBrightness();
+                      });
+                    }), opacity: 1.0,
+              ),
               bottomNavigationBar: BottomAppBar(
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
@@ -153,8 +129,7 @@ class BottomNavigationBarItem extends StatelessWidget {
                     Text(
                       title,
                       style: Theme.of(context).textTheme.caption.copyWith(
-                            color: itemColor,
-                          ),
+                          color: itemColor, fontWeight: FontWeight.w500),
                     )
                   ],
                 );

@@ -34,8 +34,9 @@ class MyApp extends StatelessWidget {
         //   subhead: theme.textTheme.subhead.copyWith(color: Colors.black38),
         //   subtitle: theme.textTheme.subtitle.copyWith(color: Colors.black38),
         // ),
-        primaryIconTheme:
-            theme.primaryIconTheme.copyWith(color: Colors.cyan[600]),
+        primaryIconTheme: theme.primaryIconTheme.copyWith(
+          color: Color.fromRGBO(0, 139, 139, 1.0),
+        ),
         accentIconTheme:
             theme.primaryIconTheme.copyWith(color: Colors.grey[500]));
 
