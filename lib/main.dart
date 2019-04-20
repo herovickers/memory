@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
         primarySwatch: Colors.grey,
         primaryColor: Colors.grey[50],
+      
         // textTheme: theme.textTheme.copyWith(
         //   headline: theme.textTheme.headline.copyWith(
         //     color: Colors.black,

@@ -1,39 +1,171 @@
-import 'package:flutter/material.dart';
+import 'dart:math';
 
-class MemoryLane extends StatelessWidget {
+import 'package:Memory/resources/avatar_shadow_colors.dart';
+import 'package:Memory/resources/dummy_data.dart';
+import 'package:Memory/resources/tab_item_map.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+class MemoryLane extends StatefulWidget {
   const MemoryLane({
     Key key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double memoryItemheight =
-        (screenHeight - kBottomNavigationBarHeight - kToolbarHeight) / 2;
+  _MemoryLaneState createState() => _MemoryLaneState();
+}
 
-    return Container(
-      child: ListView.separated(
-        physics: BouncingScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            height: memoryItemheight,
-            //TODO: Remove hard coded item count in itemCount property and margin
-            margin: EdgeInsets.only(
-                top: index == 0 ? 16.0 : 0.0, bottom: index == 5 ? 16.0 : 0.0),
-            child: Center(
-              child: ListTile(
-                title: Container(
-                    color: Colors.lightBlue,
-                    child: Center(child: Icon(Icons.timeline))),
+class _MemoryLaneState extends State<MemoryLane> {
+//TODO Replace dummy data with real data
+//TODO Set max list items as 10
+//TODO Change avatar row to list tile
+
+  var dummyItemList = DummyData.dummyItemList;
+  var dummyUserNameList = DummyData.dummyUserNameList;
+  var dummyImageUrl = DummyData.dummyImageUrl;
+  var dummyList = DummyData.dummyList;
+  var random = Random();
+
+  @override
+  Widget build(BuildContext context) {
+    ThemeData currentTheme = Theme.of(context);
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+    var aspectRatio = screenWidth / screenHeight;
+    double memoryItemheight =
+        (screenHeight - kBottomNavigationBarHeight - kToolbarHeight) * 2 / 3;
+    Color avatarShadowColor = currentTheme.brightness == Brightness.dark
+        ? AvatarShadowColor.darkAvatarShadowColor
+        : AvatarShadowColor.lightAvatarShadowColor;
+
+    return ListView.separated(
+      physics: BouncingScrollPhysics(),
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
+          // color: Colors.blue,
+          height: memoryItemheight,
+          margin: EdgeInsets.only(
+              top: index == 0 ? 16.0 : 0.0,
+              bottom: index == (dummyItemList.length - 1) ? 16.0 : 0.0,
+              left: 16.0,
+              right: 16.0),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(boxShadow: [
+                          BoxShadow(
+                              color: avatarShadowColor,
+                              offset: new Offset(0.0, 0.0),
+                              blurRadius: 10.0,
+                              spreadRadius: 0.0),
+                        ]),
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(dummyImageUrl +
+                              "white," +
+                              random
+                                  .nextInt(dummyItemList.length - 1)
+                                  .toString()),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 16.0,
+                      ),
+                      // Column(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //   children: <Widget>[
+                      //     Center(
+                      //       child: Text(DateFormat("jm")
+                      //       .format(DateTime.now())
+                      //       .toString(),
+                      //       style: Theme.of(context).textTheme.subtitle,
+                      //       ),
+                      //     ),
+                      //     Center(
+                      //       child: Text(
+                      //     "Today",
+                      //     style: Theme.of(context).textTheme.headline.copyWith(
+                      //       fontWeight: FontWeight.bold
+                      //     ),
+                      //       ),
+                      //     )
+                      //   ],
+                      // ),
+                      Text(
+                        dummyUserNameList.elementAt(index),
+                        style: Theme.of(context).textTheme.title,
+                      )
+                    ],
+                  ),
+                ),
               ),
-            ),
-          );
-        },
-        itemCount: 6,
-        separatorBuilder: (BuildContext context, int index) {
-          return Divider();
-        },
-      ),
+              Expanded(
+                flex: 4,
+                child: Align(
+                  alignment:
+                      Alignment(((1 - dummyItemList.length) / 10.0), 0.0),
+                  child: Container(
+                    //The container needs a width so the Align widget can work.
+                    width: screenWidth / 2,
+                    child: Stack(
+                      overflow: Overflow.visible,
+                      children: dummyItemList.map((f) {
+                        int itemLength = dummyItemList.length;
+                        int index2 = dummyItemList.indexOf(f);
+
+                        return Transform(
+                          alignment: Alignment.center,
+                          transform: Matrix4.identity()
+                            ..translate(0.0, 0.0, 0.0)
+                            ..translate(
+                                dummyItemList.length == 1 ? 0.0 : index2 * 10.0,
+                                0.0,
+                                0.0)
+                            ..scale(1.0, ((index2 + 1) / dummyItemList.length)
+                                // (index + 1) * 8.9 / (9 * itemLength),
+                                ),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: AspectRatio(
+                              aspectRatio: aspectRatio,
+                              child: Container(
+                                child: Center(
+                                  child: Card(
+                                    elevation: 5.0,
+                                    clipBehavior: Clip.antiAlias,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    child: Image.network(dummyImageUrl +
+                                        random
+                                            .nextInt(dummyItemList.length - 1)
+                                            .toString()),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+      itemCount: dummyList.length,
+      separatorBuilder: (BuildContext context, int index) {
+        return Divider(
+          color: Colors.grey,
+        );
+      },
     );
   }
 }

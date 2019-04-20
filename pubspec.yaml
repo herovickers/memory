@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   dynamic_theme: ^1.0.1
   rxdart: ^0.18.0
+  intl: ^0.15.8
 
 
 

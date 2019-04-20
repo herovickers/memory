@@ -10,11 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('Test that tab item map exists', () {
-    expect(TabItemMap.TAB_ITEM_MAP, isNotNull);
+  test(
+      'Test that the third tab item map value title [TabItemMap.TAB_ITEM_MAP.values.toList()[2 ] returns \'Your memories\' ',
+      () {
+    expect(TabItemMap.tabItemMap.values.toList()[2].tabItemTitle,
+        "Your memories");
   });
 
-  test('Test that the third tab item map value title [TabItemMap.TAB_ITEM_MAP.values.toList()[2 ] returns "Your memories" ', (){
-    expect(TabItemMap.TAB_ITEM_MAP.values.toList()[2].tabItemTitle, "Your memories");
+  test('Test that tab item map exists', () {
+    expect(TabItemMap.tabItemMap, isNotNull);
   });
 }

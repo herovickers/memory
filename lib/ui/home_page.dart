@@ -19,8 +19,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  List<String> tabBarItemKeysList = TabItemMap.TAB_ITEM_MAP.keys.toList();
-  List<TabItem> tabBarItemValuesList = TabItemMap.TAB_ITEM_MAP.values.toList();
+  List<String> tabBarItemKeysList = TabItemMap.tabItemMap.keys.toList();
+  List<TabItem> tabBarItemValuesList = TabItemMap.tabItemMap.values.toList();
 
   final _homePageTabs = [
     MemoryLane(),
@@ -45,18 +45,22 @@ class _HomePageState extends State<HomePage> {
             _selectedIndex = snapshot.data;
             return Scaffold(
               appBar: AppBar(
-                title: Text(tabBarItemKeysList[_selectedIndex]),
+                title: Text(tabBarItemValuesList[_selectedIndex].tabItemTitle),
                 centerTitle: true,
               ),
               body: _homePageTabs.elementAt(_selectedIndex),
               floatingActionButton: Opacity(
-                              child: FloatingActionButton(
-                    child: Icon(Icons.swap_calls),
+                child: FloatingActionButton(
+                    child: Icon(
+                      Icons.swap_calls,
+                      color: Colors.black,
+                    ),
                     onPressed: () {
                       setState(() {
                         switchBrightness();
                       });
-                    }), opacity: 1.0,
+                    }),
+                opacity: 1.0,
               ),
               bottomNavigationBar: BottomAppBar(
                 child: Row(
