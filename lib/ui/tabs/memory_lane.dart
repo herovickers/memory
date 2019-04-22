@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:Memory/resources/avatar_shadow_colors.dart';
 import 'package:Memory/resources/dummy_data.dart';
 import 'package:Memory/resources/tab_item_map.dart';
+import 'package:Memory/ui/screens/enlarged_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -15,18 +16,24 @@ class MemoryLane extends StatefulWidget {
   _MemoryLaneState createState() => _MemoryLaneState();
 }
 
-class _MemoryLaneState extends State<MemoryLane> {
+class _MemoryLaneState extends State<MemoryLane>
+    with SingleTickerProviderStateMixin {
 //TODO Replace dummy data with real data
 //TODO Set max list items as 10
-//TODO Change avatar row to list tile
 
-  var dummyItemList = DummyData.dummyItemList;
+  var dummyItemList = ["First", "Second"]; //DummyData.dummyItemList;
   var dummyUserNameList = DummyData.dummyUserNameList;
   var dummyUserAliasList = DummyData.dummyUserAliasList;
   var dummyImageUrl = DummyData.dummyImageUrl;
   var dummyList = DummyData.dummyList;
   var dummyTimestampList = DummyData.dummyTimestampList;
   var random = Random();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,58 +82,83 @@ class _MemoryLaneState extends State<MemoryLane> {
                 trailing: Text(dummyTimestampList.elementAt(index)),
               ),
               Expanded(
-                child: Container(
-                  color: Colors.green,
-                  child: Align(
-                    alignment:
-                        Alignment(((1 - dummyItemList.length) / 10.0), 0.0),
-                    child: Container(
-                      //The container needs a width so the Align widget can work.
-                      width: screenWidth / 2,
-                      child: Stack(
-                        overflow: Overflow.visible,
-                        children: dummyItemList.map((f) {
-                          int itemLength = dummyItemList.length;
-                          int index2 = dummyItemList.indexOf(f);
+                child: Align(
+                  alignment:
+                      Alignment(((1 - dummyItemList.length) / 10.0), 0.0),
+                  child: Container(
+                    //The container needs a width so the Align widget can work.
+                    width: screenWidth / 2,
+                    child: Stack(
+                      overflow: Overflow.visible,
+                      children: dummyItemList.map((f) {
+                        // int itemLength = dummyItemList.length;
+                        int index2 = dummyItemList.indexOf(f);
+                        String heroTag = dummyUserNameList.elementAt(index) +
+                            index2.toString();
 
-                          return Transform(
-                            alignment: Alignment.center,
-                            transform: Matrix4.identity()
-                              ..translate(0.0, 0.0, 0.0)
-                              ..translate(
-                                  dummyItemList.length == 1
-                                      ? 0.0
-                                      : index2 * 10.0,
-                                  0.0,
-                                  0.0)
-                              ..scale(1.0, ((index2 + 1) / dummyItemList.length)
-                                  // (index + 1) * 8.9 / (9 * itemLength),
-                                  ),
-                            child: Align(
+                        return GestureDetector(
+                          onTap: () => Navigator.push(context,
+                                  MaterialPageRoute(builder: (_) {
+                                return EnlargedImage(
+                                  tag: heroTag,
+                                );
+                              })),
+                          onHorizontalDragStart: ((dragStartDetails) {
+                            print("dragStarrtDetails");
+                            print(dragStartDetails.globalPosition);
+                          }),
+                          onHorizontalDragEnd: ((dragEndDetails) {
+                            print("dragEndDetails");
+                            print(dragEndDetails.toString());
+                          }),
+                          onHorizontalDragUpdate: ((dragUpdateDetails) {
+                            print("dragUpdateDetails");
+                            print(dragUpdateDetails.delta);
+                          }),
+                          child: Hero(
+                            tag: heroTag,
+                            child: Transform(
                               alignment: Alignment.center,
-                              child: AspectRatio(
-                                aspectRatio: aspectRatio,
-                                child: Container(
-                                  child: Center(
-                                    child: Card(
-                                      elevation: 5.0,
-                                      clipBehavior: Clip.antiAlias,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
+                              transform: Matrix4.identity()
+                                ..translate(0.0, 0.0, 0.0)
+                                ..translate(
+                                    dummyItemList.length == 1
+                                        ? 0.0
+                                        : index2 * 10.0,
+                                    0.0,
+                                    0.0)
+                                ..scale(
+                                    1.0, ((index2 + 1) / dummyItemList.length)
+                                    // (index + 1) * 8.9 / (9 * itemLength),
+                                    ),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: AspectRatio(
+                                  aspectRatio: aspectRatio,
+                                  child: Container(
+                                    color: Colors.red,
+                                    child: Center(
+                                      child: Card(
+                                        elevation: 5.0,
+                                        clipBehavior: Clip.antiAlias,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                        ),
+                                        child: Image.network(dummyImageUrl +
+                                            random
+                                                .nextInt(
+                                                    dummyItemList.length - 1)
+                                                .toString()),
                                       ),
-                                      child: Image.network(dummyImageUrl +
-                                          random
-                                              .nextInt(dummyItemList.length - 1)
-                                              .toString()),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          );
-                        }).toList(),
-                      ),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   ),
                 ),
