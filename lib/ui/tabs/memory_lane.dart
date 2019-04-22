@@ -22,8 +22,10 @@ class _MemoryLaneState extends State<MemoryLane> {
 
   var dummyItemList = DummyData.dummyItemList;
   var dummyUserNameList = DummyData.dummyUserNameList;
+  var dummyUserAliasList = DummyData.dummyUserAliasList;
   var dummyImageUrl = DummyData.dummyImageUrl;
   var dummyList = DummyData.dummyList;
+  var dummyTimestampList = DummyData.dummyTimestampList;
   var random = Random();
 
   @override
@@ -51,107 +53,80 @@ class _MemoryLaneState extends State<MemoryLane> {
               right: 16.0),
           child: Column(
             children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(boxShadow: [
-                          BoxShadow(
-                              color: avatarShadowColor,
-                              offset: new Offset(0.0, 0.0),
-                              blurRadius: 10.0,
-                              spreadRadius: 0.0),
-                        ]),
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(dummyImageUrl +
-                              "white," +
-                              random
-                                  .nextInt(dummyItemList.length - 1)
-                                  .toString()),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 16.0,
-                      ),
-                      // Column(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      //   children: <Widget>[
-                      //     Center(
-                      //       child: Text(DateFormat("jm")
-                      //       .format(DateTime.now())
-                      //       .toString(),
-                      //       style: Theme.of(context).textTheme.subtitle,
-                      //       ),
-                      //     ),
-                      //     Center(
-                      //       child: Text(
-                      //     "Today",
-                      //     style: Theme.of(context).textTheme.headline.copyWith(
-                      //       fontWeight: FontWeight.bold
-                      //     ),
-                      //       ),
-                      //     )
-                      //   ],
-                      // ),
-                      Text(
-                        dummyUserNameList.elementAt(index),
-                        style: Theme.of(context).textTheme.title,
-                      )
-                    ],
+              ListTile(
+                leading: Container(
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                        color: avatarShadowColor,
+                        offset: new Offset(0.0, 0.0),
+                        blurRadius: 10.0,
+                        spreadRadius: 0.0),
+                  ]),
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(dummyImageUrl +
+                        random.nextInt(dummyItemList.length - 1).toString()),
                   ),
                 ),
+                title: Text(
+                  dummyUserAliasList.elementAt(index),
+                  style: Theme.of(context).textTheme.title,
+                ),
+                subtitle: Text("@" + dummyUserNameList.elementAt(index)),
+                trailing: Text(dummyTimestampList.elementAt(index)),
               ),
               Expanded(
-                flex: 4,
-                child: Align(
-                  alignment:
-                      Alignment(((1 - dummyItemList.length) / 10.0), 0.0),
-                  child: Container(
-                    //The container needs a width so the Align widget can work.
-                    width: screenWidth / 2,
-                    child: Stack(
-                      overflow: Overflow.visible,
-                      children: dummyItemList.map((f) {
-                        int itemLength = dummyItemList.length;
-                        int index2 = dummyItemList.indexOf(f);
+                child: Container(
+                  color: Colors.green,
+                  child: Align(
+                    alignment:
+                        Alignment(((1 - dummyItemList.length) / 10.0), 0.0),
+                    child: Container(
+                      //The container needs a width so the Align widget can work.
+                      width: screenWidth / 2,
+                      child: Stack(
+                        overflow: Overflow.visible,
+                        children: dummyItemList.map((f) {
+                          int itemLength = dummyItemList.length;
+                          int index2 = dummyItemList.indexOf(f);
 
-                        return Transform(
-                          alignment: Alignment.center,
-                          transform: Matrix4.identity()
-                            ..translate(0.0, 0.0, 0.0)
-                            ..translate(
-                                dummyItemList.length == 1 ? 0.0 : index2 * 10.0,
-                                0.0,
-                                0.0)
-                            ..scale(1.0, ((index2 + 1) / dummyItemList.length)
-                                // (index + 1) * 8.9 / (9 * itemLength),
-                                ),
-                          child: Align(
+                          return Transform(
                             alignment: Alignment.center,
-                            child: AspectRatio(
-                              aspectRatio: aspectRatio,
-                              child: Container(
-                                child: Center(
-                                  child: Card(
-                                    elevation: 5.0,
-                                    clipBehavior: Clip.antiAlias,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
+                            transform: Matrix4.identity()
+                              ..translate(0.0, 0.0, 0.0)
+                              ..translate(
+                                  dummyItemList.length == 1
+                                      ? 0.0
+                                      : index2 * 10.0,
+                                  0.0,
+                                  0.0)
+                              ..scale(1.0, ((index2 + 1) / dummyItemList.length)
+                                  // (index + 1) * 8.9 / (9 * itemLength),
+                                  ),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: AspectRatio(
+                                aspectRatio: aspectRatio,
+                                child: Container(
+                                  child: Center(
+                                    child: Card(
+                                      elevation: 5.0,
+                                      clipBehavior: Clip.antiAlias,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                      ),
+                                      child: Image.network(dummyImageUrl +
+                                          random
+                                              .nextInt(dummyItemList.length - 1)
+                                              .toString()),
                                     ),
-                                    child: Image.network(dummyImageUrl +
-                                        random
-                                            .nextInt(dummyItemList.length - 1)
-                                            .toString()),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      }).toList(),
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
                 ),
