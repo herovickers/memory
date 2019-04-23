@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:Memory/resources/avatar_shadow_colors.dart';
 import 'package:Memory/resources/dummy_data.dart';
 import 'package:Memory/resources/tab_item_map.dart';
+import 'package:Memory/ui/screens/details_screen.dart';
 import 'package:Memory/ui/screens/enlarged_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -21,19 +22,14 @@ class _MemoryLaneState extends State<MemoryLane>
 //TODO Replace dummy data with real data
 //TODO Set max list items as 10
 
-  var dummyItemList = ["First", "Second"]; //DummyData.dummyItemList;
+  var dummyItemList = //["First", "Second"];
+      DummyData.dummyItemList;
   var dummyUserNameList = DummyData.dummyUserNameList;
   var dummyUserAliasList = DummyData.dummyUserAliasList;
   var dummyImageUrl = DummyData.dummyImageUrl;
   var dummyList = DummyData.dummyList;
   var dummyTimestampList = DummyData.dummyTimestampList;
   var random = Random();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,27 +90,19 @@ class _MemoryLaneState extends State<MemoryLane>
                         // int itemLength = dummyItemList.length;
                         int index2 = dummyItemList.indexOf(f);
                         String heroTag = dummyUserNameList.elementAt(index) +
+                            index.toString() +
                             index2.toString();
 
+                        var dummyImageUrlRandom =
+                            dummyImageUrl + index2.toString();
                         return GestureDetector(
-                          onTap: () => Navigator.push(context,
-                                  MaterialPageRoute(builder: (_) {
-                                return EnlargedImage(
-                                  tag: heroTag,
-                                );
-                              })),
-                          onHorizontalDragStart: ((dragStartDetails) {
-                            print("dragStarrtDetails");
-                            print(dragStartDetails.globalPosition);
-                          }),
-                          onHorizontalDragEnd: ((dragEndDetails) {
-                            print("dragEndDetails");
-                            print(dragEndDetails.toString());
-                          }),
-                          onHorizontalDragUpdate: ((dragUpdateDetails) {
-                            print("dragUpdateDetails");
-                            print(dragUpdateDetails.delta);
-                          }),
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => DetailsScreen(
+                                        heroTag: heroTag,
+                                      ))),
+                          
                           child: Hero(
                             tag: heroTag,
                             child: Transform(
@@ -136,21 +124,24 @@ class _MemoryLaneState extends State<MemoryLane>
                                 child: AspectRatio(
                                   aspectRatio: aspectRatio,
                                   child: Container(
-                                    color: Colors.red,
                                     child: Center(
                                       child: Card(
-                                        elevation: 5.0,
-                                        clipBehavior: Clip.antiAlias,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
-                                        ),
-                                        child: Image.network(dummyImageUrl +
-                                            random
-                                                .nextInt(
-                                                    dummyItemList.length - 1)
-                                                .toString()),
-                                      ),
+                                          color: Colors.blue,
+                                          elevation: 5.0,
+                                          clipBehavior: Clip.antiAlias,
+                                          shape: RoundedRectangleBorder(
+                                            //TODO Change border color
+                                            side: BorderSide(
+                                                width: 0.2,
+                                                color: Colors.white),
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                          ),
+                                          child: Container(
+                                            color: Colors.blue,
+                                          )
+                                          // Image.network(dummyImageUrlRandom),
+                                          ),
                                     ),
                                   ),
                                 ),
