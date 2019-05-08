@@ -3,7 +3,7 @@ class DummyData {
     return generator.toString();
   });
 
-  static List dummyItemList = List.generate(10, (generator) {
+  static List dummyItemList = List.generate(13, (generator) {
     return generator.toString();
   });
 
@@ -99,6 +99,22 @@ class DummyData {
     "22h",
     "23h",
     "24h",
+  ];
+
+  static List dummyImageAssetLocationList = [
+    "images/image_one.jpg",
+    "images/image_two.jpg",
+    "images/image_three.jpg",
+    "images/image_four.jpg",
+    "images/image_five.jpg",
+    "images/image_six.jpg",
+    "images/image_seven.jpg",
+    "images/image_eight.jpg",
+    "images/image_nine.jpg",
+    "images/image_ten.jpg",
+    "images/image_eleven.jpg",
+    "images/image_twelve.jpg",
+    "images/image_thirteen.jpg"
   ];
 
   static String dummyImageUrl = "https://loremflickr.com/" + "200/400" + "/";

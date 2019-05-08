@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class EnlargedImage extends StatefulWidget {
-  final heroTag;
-  // final imageUrl;
+  final imageUrl;
 
   EnlargedImage({
-    @required this.heroTag,
+    @required this.imageUrl,
     // @required this.imageUrl,
   });
 
@@ -15,15 +13,40 @@ class EnlargedImage extends StatefulWidget {
 }
 
 class _EnlargedImageState extends State<EnlargedImage> {
+  String _imageUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _imageUrl = widget.imageUrl;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: widget.heroTag,
-      child: Container(
-          decoration: BoxDecoration(color: Colors.blue
-              // image: DecorationImage(
-              //     image: NetworkImage(widget.imageUrl), fit: BoxFit.cover),
-              )),
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          Hero(
+            tag: _imageUrl,
+            child: Container(
+                decoration: BoxDecoration(
+              // color: Colors.blue
+              image: DecorationImage(
+                  image: AssetImage(_imageUrl), fit: BoxFit.cover),
+            )),
+          ),
+          Positioned(
+            top: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: AppBar(
+              automaticallyImplyLeading: true,
+              backgroundColor: Colors.black.withOpacity(0.05),
+              elevation: 0.0,
+            ),
+          )
+        ],
+      ),
     );
   }
 }
