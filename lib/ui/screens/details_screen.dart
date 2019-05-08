@@ -86,6 +86,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             print("dragUpdateDetails");
                             print(dragUpdateDetails.delta);
                           }),
+                          //TODO add hero
                           child: Transform(
                             alignment: Alignment.center,
                             transform: Matrix4.identity()
