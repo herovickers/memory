@@ -1,4 +1,5 @@
 import 'package:Memory/blocs/ui_helper_bloc.dart';
+import 'package:Memory/ui/screens/enlarged_image.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
         primarySwatch: Colors.grey,
         primaryColor: Colors.grey[50],
-      
+
         // textTheme: theme.textTheme.copyWith(
         //   headline: theme.textTheme.headline.copyWith(
         //     color: Colors.black,
@@ -80,11 +81,15 @@ class MyApp extends StatelessWidget {
             returnCurrentTheme(brightness, darkThemeData, lightThemeData),
         themedWidgetBuilder: (context, theme) {
           return MaterialApp(
-            title: 'Memory',
-            debugShowCheckedModeBanner: false,
-            theme: theme,
-            home: HomePage(),
-          );
+              title: 'Memory',
+              debugShowCheckedModeBanner: false,
+              theme: theme,
+              home: 
+              // EnlargedImage(
+              //   imageUrl: "images/image_one.jpg",
+              // )
+              HomePage(),
+              );
         });
   }
 

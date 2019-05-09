@@ -27,6 +27,11 @@ class _MemoryLaneState extends State<MemoryLane>
   var dummyTimestampList = DummyData.dummyTimestampList;
   var random = Random();
 
+  List shuffleDummyImages() {
+    dummyImageAssetLocationList.shuffle();
+    return dummyImageAssetLocationList;
+  }
+
   @override
   Widget build(BuildContext context) {
     ThemeData currentTheme = Theme.of(context);
@@ -42,6 +47,7 @@ class _MemoryLaneState extends State<MemoryLane>
     return ListView.separated(
       physics: BouncingScrollPhysics(),
       itemBuilder: (BuildContext context, int index) {
+        final List imageUrlList = shuffleDummyImages();
         return Container(
           // color: Colors.blue,
           height: memoryItemheight,
@@ -74,33 +80,32 @@ class _MemoryLaneState extends State<MemoryLane>
                 trailing: Text(dummyTimestampList.elementAt(index)),
               ),
               Expanded(
-                child: Align(
-                  alignment:
-                      Alignment(((1 - dummyItemList.length) / 10.0), 0.0),
-                  child: Container(
-                    //The container needs a width so the Align widget can work.
-                    width: screenWidth / 2,
-                    child: Stack(
-                      overflow: Overflow.visible,
-                      children: dummyItemList.map((f) {
-                        int index2 = dummyItemList.indexOf(f);
-                        final dummyImageAssetLocation =
-                            dummyImageAssetLocationList.elementAt(index2);
-                        return GestureDetector(
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => DetailsScreen())),
-                          child: Transform(
+                child: InkWell(
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => DetailsScreen(
+                        imageUrlList: imageUrlList
+                      ))),
+                  child: Align(
+                    alignment:
+                        Alignment(((1 - dummyItemList.length) / 10.0), 0.0),
+                    child: Container(
+                      //The container needs a width so the Align widget can work.
+                      width: screenWidth / 2,
+                      child: Stack(
+                        overflow: Overflow.visible,
+                        children: dummyItemList.map((f) {
+                          int index2 = dummyItemList.indexOf(f);
+                          final dummyImageAssetLocation =
+                              imageUrlList.elementAt(index2);
+                          return Transform(
                             alignment: Alignment.center,
                             transform: Matrix4.identity()
-                              ..translate(0.0, 0.0, 0.0)
                               ..translate(
                                   dummyItemList.length == 1
                                       ? 0.0
                                       : index2 * 10.0,
                                   0.0,
-                                  0.0)
+                                  )
                               ..scale(1.0, ((index2 + 1) / dummyItemList.length)
                                   // (index + 1) * 8.9 / (9 * itemLength),
                                   ),
@@ -137,9 +142,9 @@ class _MemoryLaneState extends State<MemoryLane>
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      }).toList(),
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
                 ),
@@ -149,6 +154,7 @@ class _MemoryLaneState extends State<MemoryLane>
         );
       },
       itemCount: dummyList.length,
+      // itemCount: 1,
       separatorBuilder: (BuildContext context, int index) {
         return Divider(
           color: Colors.grey,
