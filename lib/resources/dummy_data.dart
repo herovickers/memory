@@ -102,19 +102,19 @@ class DummyData {
   ];
 
   static List dummyImageAssetLocationList = [
-    "images/image_one.jpg",
-    "images/image_two.jpg",
-    "images/image_three.jpg",
-    "images/image_four.jpg",
-    "images/image_five.jpg",
-    "images/image_six.jpg",
-    "images/image_seven.jpg",
-    "images/image_eight.jpg",
-    "images/image_nine.jpg",
-    "images/image_ten.jpg",
-    "images/image_eleven.jpg",
-    "images/image_twelve.jpg",
-    "images/image_thirteen.jpg"
+    "dummy_images/image_one.jpg",
+    "dummy_images/image_two.jpg",
+    "dummy_images/image_three.jpg",
+    "dummy_images/image_four.jpg",
+    "dummy_images/image_five.jpg",
+    "dummy_images/image_six.jpg",
+    "dummy_images/image_seven.jpg",
+    "dummy_images/image_eight.jpg",
+    "dummy_images/image_nine.jpg",
+    "dummy_images/image_ten.jpg",
+    "dummy_images/image_eleven.jpg",
+    "dummy_images/image_twelve.jpg",
+    "dummy_images/image_thirteen.jpg"
   ];
 
   static String dummyImageUrl = "https://loremflickr.com/" + "200/400" + "/";
