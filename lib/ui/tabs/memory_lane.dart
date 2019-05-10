@@ -81,10 +81,11 @@ class _MemoryLaneState extends State<MemoryLane>
               ),
               Expanded(
                 child: InkWell(
-                  onTap: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => DetailsScreen(
-                        imageUrlList: imageUrlList
-                      ))),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) =>
+                              DetailsScreen(imageUrlList: imageUrlList))),
                   child: Align(
                     alignment:
                         Alignment(((1 - dummyItemList.length) / 10.0), 0.0),
@@ -101,11 +102,9 @@ class _MemoryLaneState extends State<MemoryLane>
                             alignment: Alignment.center,
                             transform: Matrix4.identity()
                               ..translate(
-                                  dummyItemList.length == 1
-                                      ? 0.0
-                                      : index2 * 10.0,
-                                  0.0,
-                                  )
+                                dummyItemList.length == 1 ? 0.0 : index2 * 10.0,
+                                0.0,
+                              )
                               ..scale(1.0, ((index2 + 1) / dummyItemList.length)
                                   // (index + 1) * 8.9 / (9 * itemLength),
                                   ),

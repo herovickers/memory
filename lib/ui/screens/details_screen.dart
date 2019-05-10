@@ -29,7 +29,7 @@ class _DetailsScreenState extends State<DetailsScreen>
 
     _animationController = AnimationController(
         duration: Duration(
-          milliseconds: 3000,
+          milliseconds: 500,
         ),
         vsync: this);
     _scaleAnimation = Tween(begin: 1.0, end: 1.5).animate(CurvedAnimation(
@@ -58,12 +58,12 @@ class _DetailsScreenState extends State<DetailsScreen>
   @override
   void dispose() {
     _animationController.dispose();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     var aspectRatio = screenWidth / screenHeight;
@@ -103,116 +103,122 @@ class _DetailsScreenState extends State<DetailsScreen>
             ),
             Expanded(
               flex: 5,
-              child: AspectRatio(
-                aspectRatio: aspectRatio,
-                child: GestureDetector(
-                  onHorizontalDragUpdate: ((dragUpdateDetails) {
-                    if (dragUpdateDetails.delta.dx > 0.0 &&
-                        !_animationController.isAnimating &&
-                        imageUrlListCopy.length != 1) {
-                      _animationController.reset();
+              child: GestureDetector(
+                onHorizontalDragUpdate: ((dragUpdateDetails) {
+                  if (dragUpdateDetails.delta.dx > 0.0 &&
+                      !_animationController.isAnimating &&
+                      imageUrlListCopy.length != 1) {
+                    _animationController.reset();
 
-                      _animationController.forward().whenComplete(() {
-
-                        setState(() {
-                          imageUrlListRemoved
-                              .add(imageUrlListCopy.removeLast());
-                        });
-
-                      });
-                    } else if (dragUpdateDetails.delta.dx < 0.0 &&
-                        !_animationController.isAnimating &&
-                        imageUrlListRemoved.isNotEmpty) {
-
+                    _animationController.forward().whenComplete(() {
                       setState(() {
-                        imageUrlListCopy.add(imageUrlListRemoved.removeLast());
+                        imageUrlListRemoved.add(imageUrlListCopy.removeLast());
                       });
+                    });
+                  } else if (dragUpdateDetails.delta.dx < 0.0 &&
+                      !_animationController.isAnimating &&
+                      imageUrlListRemoved.isNotEmpty) {
+                    setState(() {
+                      imageUrlListCopy.add(imageUrlListRemoved.removeLast());
+                    });
 
-                      _animationController.animateTo(0).whenComplete(() {
+                    _animationController.animateTo(0).whenComplete(() {
+                      _animationController.value = 1.0;
+                    });
+                  }
+                }),
+                child: Center(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: AspectRatio(
+                      aspectRatio: aspectRatio,
+                      child: Container(
+                        // color: Colors.amber,
+                        child: Align(
+                          alignment: Alignment(
+                              ((1 - imageUrlListCopy.length) / 10.0), 0.0),
+                          child: Stack(
+                              overflow: Overflow.visible,
+                              children: imageUrlListCopy.map((f) {
+                                int index = imageUrlList.indexOf(f);
+                                final dummyImageAssetLocation =
+                                    imageUrlList.elementAt(index);
+                                return GestureDetector(
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => EnlargedImage(
+                                              imageUrl:
+                                                  dummyImageAssetLocation))),
 
-                        _animationController.value = 1.0;
-
-                      });
-                    }
-                  }),
-                  child: Container(
-                    // color: Colors.amber,
-                    child: Align(
-                      alignment: Alignment(
-                          ((1 - imageUrlListCopy.length) / 10.0), 0.0),
-                      child: Stack(
-                          overflow: Overflow.visible,
-                          children: imageUrlListCopy.map((f) {
-                            int index = imageUrlList.indexOf(f);
-                            final dummyImageAssetLocation =
-                                imageUrlList.elementAt(index);
-                            return GestureDetector(
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => EnlargedImage(
-                                          imageUrl: dummyImageAssetLocation))),
-
-                              //TODO add hero
-                              child: Transform(
-                                alignment: Alignment.center,
-                                transform: Matrix4.identity()
-                                  ..translate(
-                                      (index == imageUrlList.length - 1
-                                          ? (MediaQuery.of(context).size.width /
-                                                  6) +
-                                              (_translateAnimation == null
-                                                  ? 0.0
-                                                  : _animationController
-                                                          .isCompleted
-                                                      ? 0.0
-                                                      : _translateAnimation
-                                                          .value)
-                                          : (((index + 1) /
-                                                  imageUrlList.length) *
-                                              MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              6)),
-                                      0.0)
-                                  ..scale(
-                                      1.0,
-                                      ((index + 1) / imageUrlList.length) *
+                                  //TODO add hero
+                                  child: Transform(
+                                    alignment: Alignment.center,
+                                    transform: Matrix4.identity()
+                                      ..translate(
                                           (index == imageUrlList.length - 1
-                                              ? _animationController.isCompleted
-                                                  ? 1.0
-                                                  : _scaleAnimation.value
-                                              : 1.0)
-                                      // (index + 1) * 8.9 / (9 * itemLength),
+                                              ? (MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      6) +
+                                                  (_translateAnimation == null
+                                                      ? 0.0
+                                                      : _animationController
+                                                              .isCompleted
+                                                          ? 0.0
+                                                          : _translateAnimation
+                                                              .value)
+                                              : (((index + 1) /
+                                                      imageUrlList.length) *
+                                                  MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  6)),
+                                          0.0)
+                                      ..scale(
+                                          1.0,
+                                          ((index + 1) /
+                                                  imageUrlList.length) *
+                                              (index ==
+                                                      imageUrlList.length - 1
+                                                  ? _animationController
+                                                          .isCompleted
+                                                      ? 1.0
+                                                      : _scaleAnimation.value
+                                                  : 1.0)
+                                          // (index + 1) * 8.9 / (9 * itemLength),
+                                          ),
+                                    child: Card(
+                                      elevation: 5.0,
+                                      clipBehavior: Clip.antiAlias,
+                                      shape: RoundedRectangleBorder(
+                                        //TODO Change border color
+                                        side: BorderSide(
+                                            width: 0.2, color: Colors.white),
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
                                       ),
-                                child: Card(
-                                  elevation: 5.0,
-                                  clipBehavior: Clip.antiAlias,
-                                  shape: RoundedRectangleBorder(
-                                    //TODO Change border color
-                                    side: BorderSide(
-                                        width: 0.2, color: Colors.white),
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  child: Container(
-                                      child: Center(
-                                          child: Text(
-                                        index.toString(),
-                                        style:
-                                            Theme.of(context).textTheme.title,
-                                      )),
-                                      decoration: BoxDecoration(
-                                          // color: Colors.blue
+                                      child: Container(
+                                          // child: Center(
+                                          //     child: Text(
+                                          //   index.toString(),
+                                          //   style:
+                                          //       Theme.of(context).textTheme.title,
+                                          // )),
+                                          decoration: BoxDecoration(
+                                        // color: Colors.blue
 
-                                          // image: DecorationImage(
-                                          //     image:
-                                          //         AssetImage(dummyImageAssetLocation),
-                                          //     fit: BoxFit.cover),
-                                          )),
-                                ),
-                              ),
-                            );
-                          }).toList()),
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                dummyImageAssetLocation),
+                                            fit: BoxFit.cover),
+                                      )),
+                                    ),
+                                  ),
+                                );
+                              }).toList()),
+                        ),
+                      ),
                     ),
                   ),
                 ),
