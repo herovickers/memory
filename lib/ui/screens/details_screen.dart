@@ -29,7 +29,7 @@ class _DetailsScreenState extends State<DetailsScreen>
 
     _animationController = AnimationController(
         duration: Duration(
-          milliseconds: 500,
+          milliseconds: 3000,
         ),
         vsync: this);
     _scaleAnimation = Tween(begin: 1.0, end: 1.5).animate(CurvedAnimation(
@@ -63,11 +63,6 @@ class _DetailsScreenState extends State<DetailsScreen>
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.width / 6);
-    // print(imageUrlListCopy.length);
-    // print(
-    //     "Animation value 🔥🔥🔥🔥🔥🔥🔥 ${_translateAnimation == null ? "Null" : _translateAnimation.value}");
-    // print("Removed values are ${imageUrlListRemoved.length}");
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -115,36 +110,28 @@ class _DetailsScreenState extends State<DetailsScreen>
                     if (dragUpdateDetails.delta.dx > 0.0 &&
                         !_animationController.isAnimating &&
                         imageUrlListCopy.length != 1) {
-                      print("Start animating");
                       _animationController.reset();
+
                       _animationController.forward().whenComplete(() {
-                        print("Done animating. Remaining " +
-                            imageUrlListCopy.length.toString());
 
                         setState(() {
                           imageUrlListRemoved
                               .add(imageUrlListCopy.removeLast());
                         });
 
-                        print("Done animating. Remaining " +
-                            imageUrlListCopy.length.toString());
                       });
                     } else if (dragUpdateDetails.delta.dx < 0.0 &&
-                        !_animationController.isAnimating) {
-                      print("Start animating reverse");
-                      print(
-                          "Removed values before reverse is ${imageUrlListRemoved.length}");
-                      _animationController.reverse().whenComplete(() {
-                        print("Done animating reverse. Remaining " +
-                            imageUrlListCopy.length.toString());
+                        !_animationController.isAnimating &&
+                        imageUrlListRemoved.isNotEmpty) {
 
-                        setState(() {
-                          //TODO create another animation controller for the two animations
-                          // imageUrlListCopy.add(imageUrlListRemoved.removeLast());
-                        });
+                      setState(() {
+                        imageUrlListCopy.add(imageUrlListRemoved.removeLast());
+                      });
 
-                        print("Done animating reverse. Remaining " +
-                            imageUrlListCopy.length.toString());
+                      _animationController.animateTo(0).whenComplete(() {
+
+                        _animationController.value = 1.0;
+
                       });
                     }
                   }),
