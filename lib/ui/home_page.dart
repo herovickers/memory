@@ -44,10 +44,6 @@ class _HomePageState extends State<HomePage> {
           builder: (context, snapshot) {
             _selectedIndex = snapshot.data;
             return Scaffold(
-              appBar: AppBar(
-                title: Text(tabBarItemValuesList[_selectedIndex].tabItemTitle),
-                centerTitle: true,
-              ),
               body: _homePageTabs.elementAt(_selectedIndex),
               floatingActionButton: Opacity(
                 child: FloatingActionButton(

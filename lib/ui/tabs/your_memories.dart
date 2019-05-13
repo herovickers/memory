@@ -7,10 +7,15 @@ class YourMemories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Text(
-      "Your memories",
-      style: TextStyle(fontSize: 48.0),
-    ));
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Your Memories"),
+      ),
+          body: Center(
+          child: Text(
+        "Your memories",
+        style: TextStyle(fontSize: 48.0),
+      )),
+    );
   }
 }

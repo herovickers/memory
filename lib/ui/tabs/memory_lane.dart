@@ -44,121 +44,133 @@ class _MemoryLaneState extends State<MemoryLane>
         ? AvatarShadowColor.darkAvatarShadowColor
         : AvatarShadowColor.lightAvatarShadowColor;
 
-    return ListView.separated(
-      physics: BouncingScrollPhysics(),
-      itemBuilder: (BuildContext context, int index) {
-        final List imageUrlList = shuffleDummyImages();
-        return Container(
-          // color: Colors.blue,
-          height: memoryItemheight,
-          margin: EdgeInsets.only(
-              top: index == 0 ? 16.0 : 0.0,
-              bottom: index == (dummyItemList.length - 1) ? 16.0 : 0.0,
-              left: 16.0,
-              right: 16.0),
-          child: Column(
-            children: <Widget>[
-              ListTile(
-                leading: Container(
-                  decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                        color: avatarShadowColor,
-                        offset: new Offset(0.0, 0.0),
-                        blurRadius: 10.0,
-                        spreadRadius: 0.0),
-                  ]),
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage(
-                        dummyImageAssetLocationList.elementAt(index)),
-                  ),
-                ),
-                title: Text(
-                  dummyUserAliasList.elementAt(index),
-                  style: Theme.of(context).textTheme.title,
-                ),
-                subtitle: Text("@" + dummyUserNameList.elementAt(index)),
-                trailing: Text(dummyTimestampList.elementAt(index)),
-              ),
-              Expanded(
-                child: InkWell(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) =>
-                              DetailsScreen(imageUrlList: imageUrlList))),
-                  child: Align(
-                    alignment:
-                        Alignment(((1 - dummyItemList.length) / 10.0), 0.0),
-                    child: Container(
-                      //The container needs a width so the Align widget can work.
-                      width: screenWidth / 2,
-                      child: Stack(
-                        overflow: Overflow.visible,
-                        children: dummyItemList.map((f) {
-                          int index2 = dummyItemList.indexOf(f);
-                          final dummyImageAssetLocation =
-                              imageUrlList.elementAt(index2);
-                          return Transform(
-                            alignment: Alignment.center,
-                            transform: Matrix4.identity()
-                              ..translate(
-                                dummyItemList.length == 1 ? 0.0 : index2 * 10.0,
-                                0.0,
-                              )
-                              ..scale(1.0, ((index2 + 1) / dummyItemList.length)
-                                  // (index + 1) * 8.9 / (9 * itemLength),
-                                  ),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: AspectRatio(
-                                aspectRatio: aspectRatio,
-                                child: Container(
-                                  child: Center(
-                                    child: Card(
-                                        elevation: 5.0,
-                                        clipBehavior: Clip.antiAlias,
-                                        shape: RoundedRectangleBorder(
-                                          //TODO Change border color
-                                          side: BorderSide(
-                                              width: 0.2, color: Colors.white),
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
-                                        ),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey.shade300,
-                                              image: DecorationImage(
-                                                  fit: BoxFit.cover,
-                                                  image: AssetImage(
-                                                      dummyImageAssetLocation))),
-                                        )
-                                        //     Image.asset(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Memory Lane"),
+      ),
+      body: ListView.separated(
+        physics: BouncingScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) {
+          List imageUrlList = shuffleDummyImages();
 
-                                        //   dmmmyImageAssetLocationRandom,
-                                        // ),
-                                        ),
+          return Container(
+            // color: Colors.blue,
+            height: memoryItemheight,
+            margin: EdgeInsets.only(
+                top: index == 0 ? 16.0 : 0.0,
+                bottom: index == (dummyItemList.length - 1) ? 16.0 : 0.0,
+                left: 16.0,
+                right: 16.0),
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  leading: Container(
+                    decoration: BoxDecoration(boxShadow: [
+                      BoxShadow(
+                          color: avatarShadowColor,
+                          offset: new Offset(0.0, 0.0),
+                          blurRadius: 10.0,
+                          spreadRadius: 0.0),
+                    ]),
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage(
+                          dummyImageAssetLocationList.elementAt(index)),
+                    ),
+                  ),
+                  title: Text(
+                    dummyUserAliasList.elementAt(index),
+                    style: Theme.of(context).textTheme.title,
+                  ),
+                  subtitle: Text("@" + dummyUserNameList.elementAt(index)),
+                  trailing: Text(dummyTimestampList.elementAt(index)),
+                ),
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      return Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) =>
+                                  DetailsScreen(imageUrlList: imageUrlList)));
+                    },
+                    child: Align(
+                      alignment:
+                          Alignment(((1 - dummyItemList.length) / 10.0), 0.0),
+                      child: Container(
+                        //The container needs a width so the Align widget can work.
+                        width: screenWidth / 2,
+                        child: Stack(
+                          overflow: Overflow.visible,
+                          children: dummyItemList.map((f) {
+                            int index2 = dummyItemList.indexOf(f);
+                            final dummyImageAssetLocation =
+                                imageUrlList.elementAt(index2);
+                            return Transform(
+                              alignment: Alignment.center,
+                              transform: Matrix4.identity()
+                                ..translate(
+                                  dummyItemList.length == 1
+                                      ? 0.0
+                                      : index2 * 10.0,
+                                  0.0,
+                                )
+                                ..scale(
+                                    1.0, ((index2 + 1) / dummyItemList.length)
+                                    // (index + 1) * 8.9 / (9 * itemLength),
+                                    ),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: AspectRatio(
+                                  aspectRatio: aspectRatio,
+                                  child: Container(
+                                    child: Center(
+                                      child: Card(
+                                          elevation: 5.0,
+                                          clipBehavior: Clip.antiAlias,
+                                          shape: RoundedRectangleBorder(
+                                            //TODO Change border color
+                                            side: BorderSide(
+                                                width: 0.2,
+                                                color: Colors.white),
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                          ),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey.shade300,
+                                                image: DecorationImage(
+                                                    fit: BoxFit.cover,
+                                                    image: AssetImage(
+                                                        dummyImageAssetLocation))),
+                                          )
+                                          //     Image.asset(
+
+                                          //   dmmmyImageAssetLocationRandom,
+                                          // ),
+                                          ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        }).toList(),
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
-      itemCount: dummyList.length,
-      // itemCount: 1,
-      separatorBuilder: (BuildContext context, int index) {
-        return Divider(
-          color: Colors.grey,
-        );
-      },
+              ],
+            ),
+          );
+        },
+        itemCount: dummyList.length,
+        // itemCount: 1,
+        separatorBuilder: (BuildContext context, int index) {
+          return Divider(
+            color: Colors.grey,
+          );
+        },
+      ),
     );
   }
 }

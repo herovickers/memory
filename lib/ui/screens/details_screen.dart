@@ -58,7 +58,7 @@ class _DetailsScreenState extends State<DetailsScreen>
   @override
   void dispose() {
     _animationController.dispose();
-
+    //TODO fix this issue with details screen mutating memory lane
     super.dispose();
   }
 
@@ -177,10 +177,8 @@ class _DetailsScreenState extends State<DetailsScreen>
                                           0.0)
                                       ..scale(
                                           1.0,
-                                          ((index + 1) /
-                                                  imageUrlList.length) *
-                                              (index ==
-                                                      imageUrlList.length - 1
+                                          ((index + 1) / imageUrlList.length) *
+                                              (index == imageUrlList.length - 1
                                                   ? _animationController
                                                           .isCompleted
                                                       ? 1.0
